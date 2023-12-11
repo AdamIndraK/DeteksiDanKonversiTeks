@@ -90,4 +90,4 @@ def detect_image():
         return jsonify({"result_image": "Belum Ada", "result_message": "Belum Ada"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
