@@ -1,6 +1,8 @@
 Flask
-gunicorn
+flask_sqlalchemy
 tensorflow
 numpy
 opencv-python
 Werkzeug
+io
+sqlalchemy
