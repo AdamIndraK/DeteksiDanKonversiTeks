@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/image/Untitled-1.css">
+    <title>Unggah Gambar</title>
+</head>
+<body>
+    <header class="header">
+        <div class="main">
+            <div class="logo">
+                <img src="./image/LogoResmiUNM.png">
+            </div>
+            <ul>
+                <li><a href="#Home" id="home-link">Home</a></li>
+                <li><a href="#Upload" id="upload-link">Upload</a></li>
+            </ul>
+        </div>
+    </header>
+    
+    <div class="content">
+        <div id="Home">
+            <h1>Selamat Datang di Aplikasi Pengelola Gambar</h1>
+            <p>Ini adalah halaman untuk mengunggah gambar dan menyimpannya ke database.</p>
+        </div>
+
+        <div id="Upload">
+            <h1 class="Judul1">Unggah Gambar</h1>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".jpg, .jpeg, .png" required>
+                <input type="submit" value="Unggah">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const homeLink = document.getElementById('home-link');
+        const uploadLink = document.getElementById('upload-link');
+
+        const homeContent = document.getElementById('Home');
+        const uploadContent = document.getElementById('Upload');
+
+        homeLink.addEventListener('click', () => {
+            homeContent.style.display = 'block';
+            uploadContent.style.display = 'none';
+        });
+
+        uploadLink.addEventListener('click', () => {
+            homeContent.style.display = 'none';
+            uploadContent.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

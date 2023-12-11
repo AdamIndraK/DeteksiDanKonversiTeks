@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block content %}
+    <link rel="stylesheet" type="text/css" href="/image/Untitled-1.css">
+    <title>Deteksi Gambar</title>
+    {% endblock %}
+</head>
+<body>  
+    <header class="header">
+        <div class="main">
+            <div class="logo">
+                <img src="./image/LogoResmiUNM.png">
+            </div>
+            <ul>
+                <li><a href="#Home" id="home-link">Home</a></li>
+                <li><a href="#About" id="about-link">About</a></li>
+                <li><a href="#Deteksi" id="detect-link">Deteksi</a></li>    
+                <li><a href="/show-results#Result" id="result-link">Database</a></li>
+
+            </ul>
+        </div>
+    </header>
+    
+    <div class="content">
+
+        <div id="Home">
+            <h1>Selamat Datang di Deteksi Gambar menggunakan YOLOv5s</h1>
+            &nbsp;
+            <p>Ini adalah halaman untuk melakukan deteksi objek pada gambar menggunakan model YOLOv5s. Silakan unggah gambar yang ingin Anda deteksi, dan kami akan memberikan hasilnya.</p>
+        </div>
+        <div id="About">
+            <h1>Tentang Pembuat Web</h1>
+            <p>Nama: Adam Indra Kaparang</p>
+            <p>Email: adamindra099@gmail.com</p>
+            <p>Deskripsi: [Deskripsi singkat tentang Anda atau proyek ini]</p>
+        </div>
+        <div id="Result">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama File</th>
+                        <th>Hasil Deteksi</th>
+                        <th>Nama Kamera</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.id }}</td>
+                        <td>{{ result.filename }}</td>
+                        <td>{{ result.detection_result }}</td>
+                        <td>{{ result.camera_name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="Deteksi">
+            <h1 class="Judul1">Deteksi Gambar menggunakan YOLOv5s</h1>
+            
+            &nbsp;
+            <!-- Tampilkan video dari kamera -->
+            <video id="camera-preview" autoplay></video>
+            
+            <!-- Tombol untuk mengambil gambar dari kamera -->
+            <button id="capture-button">Ambil Gambar</button>
+            
+            <!-- Form untuk mengunggah gambar dan nama kamera -->
+            <form method="POST" action="/detect" enctype="multipart/form-data">
+                <input type="text" name="camera_name" id="camera-name" placeholder="Nama Kamera" required>
+                <input type="hidden" name="image_data" id="captured-image" required>
+                <input type="hidden" name="device_id" id="device-id" required> <!-- Simpan ID perangkat -->
+                <button type="submit">Deteksi</button>
+            </form>
+            &nbsp;
+            <h2>Hasil Deteksi:</h2>
+            <!-- Menampilkan hasil deteksi sebagai teks -->
+            <p class="result-text">{{ result_message | safe }}</p>
+
+        &nbsp;
+        &nbsp;
+            <div class="center-image"></div>
+                <h2>Gambar Hasil Deteksi:</h2>
+                &nbsp;
+                {% if result_image %}
+                <img src="{{ url_for('ambil_gambar', image_name=result_image) }}" alt="Detected Image" class="img-result">
+                {% else %}
+                &nbsp;
+                    <p>Tidak ada gambar hasil deteksi.</p>
+                {% endif %}
+            </div>
+        </div>
+  
+        <script>
+            const homeLink = document.getElementById('home-link');
+            const aboutLink = document.getElementById('about-link');
+            const detectLink = document.getElementById('detect-link');
+            const resultLink = document.getElementById('result-link');
+
+            const homeContent = document.getElementById('Home');
+            const aboutContent = document.getElementById('About');
+            const detectContent = document.getElementById('Deteksi');
+            const resultContent = document.getElementById('Result');
+
+            homeLink.addEventListener('click', () => {
+                homeContent.style.display = 'block';
+                aboutContent.style.display = 'none';
+                detectContent.style.display = 'none';
+                resultContent.style.display = 'none';
+            });
+
+            aboutLink.addEventListener('click', () => {
+                homeContent.style.display = 'none';
+                aboutContent.style.display = 'block';
+                detectContent.style.display = 'none';
+                resultContent.style.display = 'none';
+            });
+
+            detectLink.addEventListener('click', () => {
+                homeContent.style.display = 'none';
+                aboutContent.style.display = 'none';
+                detectContent.style.display = 'block';
+                resultContent.style.display = 'none';
+            });
+
+            resultLink.addEventListener('click', () => {
+                homeContent.style.display = 'none';
+                aboutContent.style.display = 'none';
+                detectContent.style.display = 'none';
+                resultContent.style.display = 'block';
+            });
+
+        </script>
+           
+        <script>
+        const cameraPreview = document.getElementById('camera-preview');
+        const captureButton = document.getElementById('capture-button');
+        const cameraNameInput = document.getElementById('camera-name');
+        const capturedImageInput = document.getElementById('captured-image');
+        const deviceIdInput = document.getElementById('device-id');
+        
+        // Mengaktifkan kamera dan menampilkan preview video
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                cameraPreview.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing camera:', error);
+            });
+        
+        // Mengambil gambar dari video saat tombol ditekan
+        captureButton.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = cameraPreview.videoWidth;
+            canvas.height = cameraPreview.videoHeight;
+            context.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
+            const imageDataURL = canvas.toDataURL('image/jpeg'); // Mengambil gambar dalam format JPEG
+            
+            // Simpan data gambar ke input field sebagai base64
+            capturedImageInput.value = imageDataURL;
+            
+            // Tampilkan gambar yang diambil dalam elemen <img> (opsional)
+            const imgPreview = document.createElement('img');
+            imgPreview.src = imageDataURL;
+            document.body.appendChild(imgPreview);
+            
+            // Simpan ID perangkat ke input field
+            const deviceId = '12345'; // Gantilah dengan logika pengambilan ID perangkat yang sesuai
+            deviceIdInput.value = deviceId;
+        });
+    </script>
+        </script>
+</body>
+</html>
+

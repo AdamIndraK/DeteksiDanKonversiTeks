@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Century;
+}
+
+#Home, #About, #Result {
+    display: none;
+}
+
+#Deteksi {
+    display: block; /* Ini akan menampilkan bagian "Deteksi" secara default */
+}
+
+.content{
+    position: relative;
+    z-index: 1; /* Mengatur konten di atas latar belakang */
+    height: fit-content;
+    margin-left: 40px;
+    margin-top: 100px;
+    font-family: 'Times New Roman';
+    color:black
+}
+
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('Backgroundbaru1.jpg');
+    background-size: cover;
+    z-index: -1; /* Mengatur latar belakang di belakang konten */
+}
+
+ul {
+    float: right;
+    list-style-type: none;
+    margin-top: 30px;
+    min-height: 400px;
+    margin-right: 40px;
+    font-size: 30px;
+}
+
+ul li {
+    display: inline-block;
+    margin-left: 20px; /* Untuk memberi jarak antara tautan menu */
+}
+
+ul li a {
+    text-decoration: none;
+    color: black;
+    padding: 5px 20px; /* Perbaiki spasi yang tidak seharusnya di sini */
+    border: 1px solid transparent;
+    transition: 0.5s ease; /* Perbaiki 's' pada '0.5s' */
+}
+
+ul li a:hover {
+    background-color: #ffff;
+    color: black;
+}
+
+.logo img {
+    float: left;
+    width: 70px;
+    height: auto; 
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.main{
+    max-width: 1200px;
+    margin: auto;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Untuk mengisi tinggi container */
+}
+
+.img-result {
+    width: 200px; /* Atur lebar gambar sesuai kebutuhan */
+    height: 300px; /* Biarkan tinggi gambar menyesuaikan proporsi aslinya */
+    margin-left: 50px;
+}
+
+table{
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th, td{
+    text-align: left;
+    padding: 1rem;
+}
+
+tr:nth-child(even){
+    background: white;
+}

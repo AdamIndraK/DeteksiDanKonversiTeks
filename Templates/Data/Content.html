@@ -1,0 +1,31 @@
+{% extends "index.html" %}    
+        <div id="Deteksi">
+            <h1 class="Judul1">Deteksi Gambar menggunakan YOLOv5s</h1>
+            &nbsp;
+            <form action="/detect" method="POST" enctype="multipart/form-data">
+                <!-- Input untuk memilih gambar dari folder -->
+                <input type="file" name="file" accept=".jpg, .jpeg, .png" required>
+                <!-- Input untuk mengambil gambar dari kamera -->
+                <input type="file" accept="image/*" capture="camera" id="camera-input" style="display: none;">
+                <input type="hidden" name="camera_name" id="camera-name-input"> <!-- Tambahkan input tersembunyi untuk camera_name -->
+                <input type="button" value="Ambil Gambar dari Kamera" onclick="captureFromCamera()">
+                <input type="submit" value="Deteksi">
+            </form>
+            &nbsp;
+            <h2>Hasil Deteksi:</h2>
+            <!-- Menampilkan hasil deteksi sebagai teks -->
+            <p class="result-text">{{ result_message | safe }}</p>
+
+        &nbsp;
+        &nbsp;
+            <div class="center-image"></div>
+                <h2>Gambar Hasil Deteksi:</h2>
+                &nbsp;
+                {% if result_image %}
+                <img src="{{ url_for('ambil_gambar', image_name=result_image) }}" alt="Detected Image" class="img-result">
+                {% else %}
+                &nbsp;
+                    <p>Tidak ada gambar hasil deteksi.</p>
+                {% endif %}
+            </div>
+        </div>
